@@ -10,8 +10,8 @@ import Link from 'next/link';
 const page = () => {
   return (
     <div className='flex bg-[#030816] h-screen w-screen justify-center items-center'>
-        <div className='p-10 mx-4 border border-slate-700 rounded-xl bg-[#030816] '>
-          <div className='flex flex-col gap-4 mb-4'>
+        <div className='p-6 mx-4 border border-slate-700 rounded-xl bg-[#030816] '>
+          <div className='flex flex-col gap-2 mb-4'>
             <h3 className='text-white text-3xl font-semibold'>Create an account</h3>
             <p className='text-slate-400 font-medium text-sm'>Enter your email below to create your account</p>
           </div>
