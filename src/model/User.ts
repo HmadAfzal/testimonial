@@ -39,7 +39,7 @@ const userSchema: Schema<User> = new mongoose.Schema({
     type: Date,
     required: true,
   },
-});
+},{timestamps:true});
 
 const UserModel =
   (mongoose.models.User as mongoose.Model<User>) ||
