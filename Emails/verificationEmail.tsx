@@ -7,15 +7,14 @@ import {
     Row,
     Section,
     Text,
-    Button,
   } from '@react-email/components';
   
   interface VerificationEmailProps {
-    name: string;
+    username: string;
     verifyCode: string;
   }
   
-  export default function VerificationEmail({ name, verifyCode }: VerificationEmailProps) {
+  export default function VerificationEmail({ username, verifyCode }: VerificationEmailProps) {
     return (
       <Html lang="en" dir="ltr">
         <Head>
@@ -34,7 +33,7 @@ import {
         <Preview>Here&apos;s your verification code: {verifyCode}</Preview>
         <Section>
           <Row>
-            <Heading as="h2">Hello {name},</Heading>
+            <Heading as="h2">Hello {username},</Heading>
           </Row>
           <Row>
             <Text>

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 export interface User extends Document {
-  name: string;
+  username: string;
   email: string;
   password: string;
   isVerified: boolean;
@@ -11,9 +11,9 @@ export interface User extends Document {
 }
 
 const userSchema: Schema<User> = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
-    required: [true, "Name is required"],
+    required: [true, "username is required"],
   },
   email: {
     type: String,
@@ -23,7 +23,6 @@ const userSchema: Schema<User> = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Password is required"],
     min: 8,
   },
   isVerified: {
@@ -33,7 +32,6 @@ const userSchema: Schema<User> = new mongoose.Schema({
   },
   verifyCode: {
     type: String,
-    required: true,
   },
   verifyCodeExpiry: {
     type: Date,

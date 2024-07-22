@@ -6,7 +6,6 @@ import bcrypt from 'bcryptjs';
 import UserModel from '@/model/User';
 import { dbConnect } from '@/lib/dbconnect';
 
-// Check if environment variables are defined
 const githubClientId = process.env.GITHUB_CLIENT_ID;
 const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
@@ -59,9 +58,9 @@ export const authOptions: NextAuthOptions = {
         const existingUser = await UserModel.findOne({ email: user.email });
         if (!existingUser) {
           const newUser = new UserModel({
-            name: user.name || profile?.name,
+            username: user.name || profile?.name,
             email: user.email,
-            password: '', // No password for OAuth users
+            password: user.id,
             isVerified: true,
             verifyCode: '', // No verify code for OAuth users
             verifyCodeExpiry: new Date(),
@@ -76,7 +75,7 @@ export const authOptions: NextAuthOptions = {
         token._id = user._id?.toString(); 
         token.isVerified = user.isVerified;
         token.email = user.email;
-        token.name = user.name;
+        token.username = user.username;
       }
       return token;
     },
@@ -85,7 +84,7 @@ export const authOptions: NextAuthOptions = {
         session.user._id = token._id;
         session.user.isVerified = token.isVerified;
         session.user.email = token.email;
-        session.user.name = token.name;
+        session.user.username = token.username;
       }
       return session;
     },
