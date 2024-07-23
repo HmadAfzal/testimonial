@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface User extends Document {
   username: string;
@@ -8,6 +7,7 @@ export interface User extends Document {
   isVerified: boolean;
   verifyCode: string;
   verifyCodeExpiry: Date;
+  spaces: mongoose.Schema.Types.ObjectId[];
 }
 
 const userSchema: Schema<User> = new mongoose.Schema({
@@ -23,7 +23,7 @@ const userSchema: Schema<User> = new mongoose.Schema({
   },
   password: {
     type: String,
-    min: 8,
+    minlength: 8,
   },
   isVerified: {
     type: Boolean,
@@ -37,10 +37,13 @@ const userSchema: Schema<User> = new mongoose.Schema({
     type: Date,
     required: true,
   },
-},{timestamps:true});
+  spaces: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Space",
+    },
+  ],
+}, { timestamps: true });
 
-const UserModel =
-  (mongoose.models.User as mongoose.Model<User>) ||
-  mongoose.model<User>("User", userSchema);
-
+const UserModel = mongoose.models.User || mongoose.model<User>("User", userSchema);
 export default UserModel;
