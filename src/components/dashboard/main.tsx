@@ -7,15 +7,15 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+import { useAppSelector } from '@/redux/hooks';
+import { selectUser } from '@/redux/UserSlice';
 
 const Main = ({ setCreateSpace }:{setCreateSpace:any}) => {
-  const { data } = useSession();
-
   const handleSignout = async () => {
     await signOut();
   };
-
+  const user=useAppSelector(selectUser)
   return (
     <div>
       <nav className='flex justify-between py-4'>
@@ -25,7 +25,7 @@ const Main = ({ setCreateSpace }:{setCreateSpace:any}) => {
       <div className='flex flex-col pt-32 gap-20 h-[80%] w-full'>
         <div className='flex w-full justify-between py-20'>
           <h1 className='font-bold text-5xl text-start'>
-            Welcome back {data?.user.username || data?.user.name}!👋
+            Welcome back {user?.username}!👋
           </h1>
           <Button onClick={() => setCreateSpace(true)}>
             <Plus /> Create space
@@ -36,18 +36,22 @@ const Main = ({ setCreateSpace }:{setCreateSpace:any}) => {
         </div> */}
 
         <div className='grid grid-cols-3 gap-4'>
-          {Array(3).fill().map((_, index) => (
-            <div key={index} className='w-80 cursor-pointer hover:scale-95 transition-transform'>
+          {
+            user?.spaces.map((space)=>{
+           return <div key={space._id}  className='w-80 cursor-pointer hover:scale-95 transition-transform'>
               <Card>
                 <CardHeader>
-                  <CardTitle>Space Name</CardTitle>
+                  <CardTitle>{space.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>Messages: 4</p>
+                  <p>Messages: {space.messages.length}</p>
                 </CardContent>
               </Card>
             </div>
-          ))}
+            })
+          }
+            
+          
         </div>
       </div>
     </div>

@@ -10,14 +10,16 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { toast } from "@/components/ui/use-toast"
-import { SpaceSchema } from "@/schemas/CreateSpaceSchema"
+import { SpaceSchema } from "@/schemas/SpaceSchema"
 import { Moon } from "lucide-react"
 import { Switch } from "@/components/ui/switch"
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const Createspace = ({ setCreateSpace }: { setCreateSpace: any }) => {
     const [loading, setLoading] = useState(false);
     const [additional, setAdditional] = useState(false);
-
+    const {data}=useSession();
     const form = useForm<z.infer<typeof SpaceSchema>>({
         resolver: zodResolver(SpaceSchema),
         defaultValues: {
@@ -32,13 +34,41 @@ const Createspace = ({ setCreateSpace }: { setCreateSpace: any }) => {
         },
     })
 
-    function onSubmit(data: z.infer<typeof SpaceSchema>) {
-        console.log(data)
+   async function onSubmit(spacedata: z.infer<typeof SpaceSchema>) {
+        setLoading(true)
+        try { 
+            const response = await axios.post('/api/create-space', {
+                email:data.user.email,
+                name: spacedata.name,
+                image: spacedata.image,
+                headline: spacedata.headline,
+                description: spacedata.description,
+                isDarkTheme: spacedata.isDarkTheme,
+                thankyouPageTitle: spacedata.thankyouPageTitle,
+                thankyouPageText:spacedata.thankyouPageText,
+                sticker:spacedata.sticker
+            })
+            console.log(response);
+            setCreateSpace(false)
+            toast({
+                title:'success',
+                description:response.data.message
+            })
+        } catch (error:any) {
+            console.log(error)
+            toast({
+                title:'error',
+                description:error.response.data.message,
+                variant:'destructive'
+            })
+        } finally{
+            setLoading(false)
+        }
        
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen h-[120vh]">
+        <div className={`flex items-center justify-center min-h-screen ${additional && 'h-[120vh]'}`}>
             <Card className="w-[550px]">
                 <CardHeader>
                     <CardTitle>Create Space</CardTitle>

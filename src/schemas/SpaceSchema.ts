@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Message } from "./MessageSchema";
 
 
 
@@ -13,4 +14,21 @@ export const SpaceSchema = z.object({
     sticker: z.string().optional(),
 });
 
+
+
+
+export interface Space {
+    _id:string
+    name:string,
+    image: string,
+    headline: string,
+    description: string,
+    isDarkTheme: boolean,
+    thankyouPageTitle:string,
+    thankyouPageText:string,
+    sticker:string,
+    createdAt:string,
+    messages:Message[]
+
+}
 

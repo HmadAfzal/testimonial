@@ -53,6 +53,9 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      // console.log('user:',user)
+      // console.log('account:', account)
+      // console.log('profile:',profile)
       await dbConnect();
       if (account?.provider === 'github' || account?.provider === 'google') {
         const existingUser = await UserModel.findOne({ email: user.email });
