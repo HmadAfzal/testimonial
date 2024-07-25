@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { useAppSelector } from '@/redux/hooks';
 import { selectUser } from '@/redux/UserSlice';
+import Link from 'next/link';
 
 const Main = ({ setCreateSpace }:{setCreateSpace:any}) => {
   const handleSignout = async () => {
@@ -38,7 +39,8 @@ const Main = ({ setCreateSpace }:{setCreateSpace:any}) => {
         <div className='grid grid-cols-3 gap-4'>
           {
             user?.spaces.map((space)=>{
-           return <div key={space._id}  className='w-80 cursor-pointer hover:scale-95 transition-transform'>
+           return <div key={space._id} className='w-80 cursor-pointer hover:scale-95 transition-transform'>
+            <Link href={`/space/${space.name}`} >
               <Card>
                 <CardHeader>
                   <CardTitle>{space.name}</CardTitle>
@@ -47,6 +49,7 @@ const Main = ({ setCreateSpace }:{setCreateSpace:any}) => {
                   <p>Messages: {space.messages.length}</p>
                 </CardContent>
               </Card>
+              </Link>
             </div>
             })
           }
